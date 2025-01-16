@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
 
     'rest_framework',
     'django_summernote',
@@ -90,7 +91,7 @@ WSGI_APPLICATION = 'news_and_places.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": str(os.getenv("POSTGRES_NAME")),
         "USER": str(os.getenv("POSTGRES_USER")),
         "PASSWORD": str(os.getenv("POSTGRES_PASSWORD")),
@@ -147,7 +148,7 @@ CONSTANCE_CONFIG = {
     'NEWS_TIME_OF_MESSAGE': (time(12, 00), 'Время отправки сообщения (ЧЧ:ММ)', time),
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = str(os.getenv("REDIS_HOST"))
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
@@ -158,7 +159,7 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CACHES = {
     'default': {
         'BACKEND': "django.core.cache.backends.redis.RedisCache",
-        'LOCATION': "redis://127.0.0.1:6379/1",
+        'LOCATION': str(os.getenv("REDIS_CACHES")),
     }
 }
 
@@ -169,3 +170,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = str(os.getenv("EMAIL_HOST_USER"))
 EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
 DEFAULT_FROM_EMAIL = str(os.getenv("DEFAULT_FROM_EMAIL"))
+
+GISMETEO_TOKEN = "56b30cb255.3443075"
