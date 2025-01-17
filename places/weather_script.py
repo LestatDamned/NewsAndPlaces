@@ -4,6 +4,7 @@ from pprint import pprint
 
 import requests
 from dotenv import load_dotenv
+from requests import HTTPError
 
 from .models import Place, WeatherReport
 
@@ -28,40 +29,30 @@ def fetch_weather(place: Place):
     if not key:
         raise ValueError("Не указан API-ключ. Убедитесь, что переменная WEATHER_API_KEY задана в .env файле.")
 
-    lat = place.location.y  # Широта
-    lon = place.location.x  # Долгота
+    lat = place.location.y
+    lon = place.location.x
     base_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={key}"
 
     try:
         response = requests.get(base_url)
         response.raise_for_status()
-        data = response.json()
+    except HTTPError as e:
+        raise ConnectionError(f"Ошибка при запросе к API: {e}")
 
-        temp = data["main"]["temp"]
-        humidity = data["main"]["humidity"]
-        pressure = data["main"]["pressure"]
-        wind_speed = data["wind"]["speed"]
-        wind_direction = random.choice(WIND_DIRECTIONS)
+    data = response.json()
+    temp = data["main"]["temp"]
+    humidity = data["main"]["humidity"]
+    pressure = data["main"]["pressure"]
+    wind_speed = data["wind"]["speed"]
+    wind_direction = random.choice(WIND_DIRECTIONS)
 
-        weather_report = WeatherReport.objects.create(
-            place=place,
-            temperature=temp,
-            humidity=humidity,
-            pressure=pressure,
-            wind_direction=wind_direction,
-            wind_speed=wind_speed
-        )
+    weather_report = WeatherReport.objects.create(
+        place=place,
+        temperature=temp,
+        humidity=humidity,
+        pressure=pressure,
+        wind_direction=wind_direction,
+        wind_speed=wind_speed
+    )
 
-        print(f"Weather data for {place.name}:")
-        pprint({
-            "Temperature": temp,
-            "Humidity": humidity,
-            "Pressure": pressure,
-            "Wind Direction": wind_direction,
-            "Wind Speed": wind_speed,
-        })
-
-        return weather_report
-
-    except Exception as e:
-        raise Exception(f"Ошибка при запросе к API: {e}")
+    return weather_report

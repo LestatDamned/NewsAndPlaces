@@ -1,7 +1,7 @@
 from celery import shared_task
 
 from .models import Place
-from .weather_script import fetch_weather, RequestError
+from .weather_script import fetch_weather
 
 
 @shared_task()
@@ -11,8 +11,6 @@ def get_weather_report():
     try:
         for place in places:
             fetch_weather(place)
-    except (ValueError, Exception) as e:
+    except (ValueError, ConnectionError) as e:
         print(f"Ошибка при получении данных о погоде для места {place.name}: {e}")
         return f"Ошибка: {e}"
-
-    return "Данные о погоде успешно получены"

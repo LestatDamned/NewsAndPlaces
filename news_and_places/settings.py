@@ -141,11 +141,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'choice_period': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': ((None, "-----"),
+                    ("DAYS", "ДНИ"),
+                    ("HOURS", "ЧАСЫ"),
+                    ("MINUTES", "МИНУТЫ"),
+                    ("SECONDS", "СЕКУНДЫ"),
+                    ("MICROSECONDS", "МИКРОСЕКУНДЫ"))
+    }],
+}
+
+
 CONSTANCE_CONFIG = {
-    'NEWS_RECIPIENTS': ('lestat.one@yandex.ru', 'Список получателей новостей', str),
-    'NEWS_SUBJECT': ('Сборник новостей сегодняшнего дня', 'Тема письма', str),
-    'NEWS_TEXT': ('Примерный текст сообщения', 'Текст письма', str),
+    'NEWS_RECIPIENTS': ('lestat.one@yandex.ru', 'Список получателей новостей (записывать через запятую)', str),
+    'NEWS_SUBJECT': ('Сборник новостей за сегодняшнего дня', 'Тема письма', str),
+    'NEWS_TEXT': ('Здравствуйте, подборка новостей за сегодняшний день!', 'Текст письма', str),
     'NEWS_TIME_OF_MESSAGE': (time(12, 00), 'Время отправки сообщения (ЧЧ:ММ)', time),
+    'WEATHER_REPORT_INTERVAL': (1, 'Какой интервал ожидания перед повторным запуском задачи', int),
+    'WEATHER_REPORT_PERIOD': ("HOURS", 'Тип периода между запусками задач (пример: дни)', 'choice_period')
+
 }
 
 CELERY_BROKER_URL = str(os.getenv("REDIS_HOST"))

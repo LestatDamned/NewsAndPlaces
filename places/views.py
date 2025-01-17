@@ -2,6 +2,7 @@ from datetime import datetime
 from io import BytesIO
 
 import openpyxl
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.utils import timezone
 from openpyxl.workbook import Workbook
@@ -13,7 +14,12 @@ from .models import WeatherReport, Place
 
 
 class ImportPlacesAPIView(APIView):
-    """Ендпоинт для импорта xlsx-файла с данными"""
+    """Ендпоинт для импорта xlsx-файла с данными
+    Ожидаемый формат xlsx-файла:
+    1 колонка - Название места (строка)
+    2 колонка - Координаты места в формате "широта, долгота" (строка, например: "56.0105, 92.8625")
+    3 колонка - Рейтинг места (целое число от 0 до 25)
+    """
     parser_classes = [MultiPartParser]
 
     def post(self, request):
@@ -38,7 +44,7 @@ class ImportPlacesAPIView(APIView):
                 )
 
             return Response({"message": "Данные успешно импортированы"})
-        except Exception as e:
+        except (ValidationError, ValueError) as e:
             return Response({"error": str(e)}, status=500)
 
 
@@ -98,9 +104,12 @@ class WeatherExportAPIView(APIView):
 
         wb.save(output)
         output.seek(0)
+        result = output.getvalue()
 
-        response = HttpResponse(output.getvalue(),
-                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(
+            result,
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
         response['Content-Disposition'] = f'attachment; filename={ws.title}'
 
         return response
