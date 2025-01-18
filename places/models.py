@@ -11,6 +11,11 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Примечательное место"
+        verbose_name_plural = "Примечательные места"
+
+
 
 class WeatherReport(models.Model):
     """Модель погоды"""

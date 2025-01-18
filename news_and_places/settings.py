@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-&fv5t4o-&h8rrlj-2lthdpj^7g99g-zwvf!1^uxu+@!ai*6i91
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -161,7 +161,6 @@ CONSTANCE_CONFIG = {
     'NEWS_TIME_OF_MESSAGE': (time(12, 00), 'Время отправки сообщения (ЧЧ:ММ)', time),
     'WEATHER_REPORT_INTERVAL': (1, 'Какой интервал ожидания перед повторным запуском задачи', int),
     'WEATHER_REPORT_PERIOD': ("HOURS", 'Тип периода между запусками задач (пример: дни)', 'choice_period')
-
 }
 
 CELERY_BROKER_URL = str(os.getenv("REDIS_HOST"))
@@ -186,5 +185,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = str(os.getenv("EMAIL_HOST_USER"))
 EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
 DEFAULT_FROM_EMAIL = str(os.getenv("DEFAULT_FROM_EMAIL"))
-
-GISMETEO_TOKEN = "56b30cb255.3443075"
