@@ -16,8 +16,12 @@ def send_news_email():
     recipients = config.NEWS_RECIPIENTS.split(",")
     message = config.NEWS_TEXT
 
-    for news in today_news:
-        message += f"<hr>Новость: {news.title}<br>Текст: {news.text}Автор: {news.author}"
+    if today_news:
+        for news in today_news:
+            message += f"<hr>Новость: {news.title}<br>Текст: {news.text}Автор: {news.author}"
+    else:
+        message += "<hr>На сегодня нет новых новостей.<br>"
+
     send_mail(subject=subject,
               from_email=settings.DEFAULT_FROM_EMAIL,
               recipient_list=recipients,

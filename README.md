@@ -35,7 +35,7 @@
 1. **Склонируйте репозиторий**:
     ```bash
    git clone https://github.com/LestatDamned/NewsAndPlaces.git
-   cd news_and_places
+   cd NewsAndPlaces
     ```
 
 2. **Скопируйте файл `.env.example` в `.env` и настройте параметры**:
@@ -64,11 +64,15 @@
    
    # API-ключ для получения данных о погоде
    WEATHER_API_KEY=your-weather-api-key  # Ваш API-ключ от OpenWeatherMap
+   
+   DJANGO_SUPERUSER_USERNAME=admin       # Имя супер пользователя
+   DJANGO_SUPERUSER_PASSWORD=admin       # Пароль супер пользователя
+   DJANGO_SUPERUSER_EMAIL=admin@test.ru  # Почта супер пользователя
    ```
 
 3. **Запустите контейнеры с помощью Docker Compose**:
    ```bash
-   docker compose up --build
+   docker compose -f docker-compose.yml up --build
    ```
 
 4. **Доступ к проекту**:  
@@ -90,20 +94,10 @@
 ---
 
 ## Миграции и начальная настройка
-
-1. **Примените миграции** для создания таблиц базы данных:
-   ```bash
-   docker-compose exec web python manage.py migrate
-   ```
-
-2. **Создайте суперпользователя** для доступа в админку:
-   ```bash
-   docker-compose exec web python manage.py createsuperuser
-   ```
-
-3. **Доступ к админке**:  
-   После настройки админка будет доступна по адресу [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
-
+   - Все происходит автоматически при запуске docker compose
+   - Стандартный супер пользователь: 
+     - login: `admin`
+     - password: `admin`
 ---
 
 ## Документация API
@@ -155,5 +149,5 @@
 - Для разработки и тестирования используются Docker и Docker Compose.  
 - Контейнеры запускаются с помощью:
    ```bash
-   docker-compose up
+   docker compose up
    ```
