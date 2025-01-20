@@ -8,9 +8,10 @@ from django_summernote.fields import SummernoteTextField
 
 class News(models.Model):
     """Модель новостей"""
-    title = models.CharField(max_length=255,verbose_name="Заголовок")
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
     main_image = models.ImageField(upload_to='news_images/%Y/%m/%d/', verbose_name="Изображение к новости")
-    preview_image = models.ImageField(upload_to='news_previews/%Y/%m/%d/',verbose_name="Превью-изображение" ,blank=True)
+    preview_image = models.ImageField(upload_to='news_previews/%Y/%m/%d/', verbose_name="Превью-изображение",
+                                      blank=True)
     text = SummernoteTextField()
     publish_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     author = models.CharField(max_length=255, verbose_name="Автор")

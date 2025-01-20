@@ -1,6 +1,5 @@
 import os
 import random
-from pprint import pprint
 
 import requests
 from dotenv import load_dotenv

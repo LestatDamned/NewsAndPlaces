@@ -153,7 +153,6 @@ CONSTANCE_ADDITIONAL_FIELDS = {
     }],
 }
 
-
 CONSTANCE_CONFIG = {
     'NEWS_RECIPIENTS': ('lestat.one@yandex.ru', 'Список получателей новостей (записывать через запятую)', str),
     'NEWS_SUBJECT': ('Сборник новостей за сегодняшнего дня', 'Тема письма', str),

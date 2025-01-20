@@ -16,7 +16,6 @@ class Place(models.Model):
         verbose_name_plural = "Примечательные места"
 
 
-
 class WeatherReport(models.Model):
     """Модель погоды"""
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="weather_reports",

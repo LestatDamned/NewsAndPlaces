@@ -5,6 +5,7 @@ from .models import News
 
 class NewsSerializer(serializers.ModelSerializer):
     """Сериализатор для модели новостей"""
+
     class Meta:
         model = News
         fields = ['id', 'title', 'main_image', 'preview_image', 'text', 'publish_date']
